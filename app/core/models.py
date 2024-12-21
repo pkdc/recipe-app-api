@@ -77,5 +77,13 @@ class Tag(models.Model):
         on_delete=models.CASCADE,
     )
 
+    def save(self, *args, **kwargs):
+        self.name = self.name.strip().lower()
+        super().save(*args, **kwargs)
+
+    class Meta:
+        unique_together = ('name', 'user')
+        ordering = ['-name']
+
     def __str__(self):
         return self.name

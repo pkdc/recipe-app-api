@@ -124,7 +124,7 @@ class PrivateRecipeApiTests(TestCase):
     def test_create_recipe(self):
         """Test creating a recipe"""
         payload = {
-            'title': "Sample recipe",
+            'title': "sample recipe",
             'time_minutes': 30,
             'price': Decimal('3.16'),
         }
@@ -139,10 +139,10 @@ class PrivateRecipeApiTests(TestCase):
     def test_create_recipe_with_new_tags(self):
         """Test creating a recipe with new tags"""
         payload = {
-            'title': 'Thai curry',
+            'title': 'thai curry',
             'time_minutes': 30,
             'price': Decimal('17.0'),
-            'tags': [{'name': 'Thai'}, {'name': 'Dinner'}]
+            'tags': [{'name': 'thai'}, {'name': 'dinner'}]
         }
         resp = self.client.post(RECIPES_URL, payload, format='json')
 
@@ -157,12 +157,12 @@ class PrivateRecipeApiTests(TestCase):
 
     def test_create_recipe_with_existing_tags(self):
         """Test creating a recipe with existing tags"""
-        tag_indian = Tag.objects.create(user=self.user, name='Indian')
+        tag_indian = Tag.objects.create(user=self.user, name='indian')
         payload = {
             'title': 'Indian curry',
             'time_minutes': 36,
             'price': Decimal('31.6'),
-            'tags': [{'name': 'Indian'}, {'name': 'Lunch'}]
+            'tags': [{'name': 'indian'}, {'name': 'lunch'}]
         }
         resp = self.client.post(RECIPES_URL, payload, format='json')
 
@@ -181,24 +181,24 @@ class PrivateRecipeApiTests(TestCase):
         recipe = create_recipe(user=self.user)
 
         payload = {
-            'tags': [{'name': 'Lunch'}]
+            'tags': [{'name': 'lunch'}]
         }
         url = detail_url(recipe.id)
         resp = self.client.patch(url, payload, format='json')
 
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
-        new_tag_from_db = Tag.objects.get(user= self.user, name='Lunch')
+        new_tag_from_db = Tag.objects.get(user= self.user, name='lunch')
         self.assertIn(new_tag_from_db, recipe.tags.all())
 
     def test_update_recipe_assign_tag(self):
         """Test assigning an existing tag when updating a recipe."""
-        tag_breakfast = Tag.objects.create(user=self.user, name='Breakfast')
+        tag_breakfast = Tag.objects.create(user=self.user, name='breakfast')
         recipe = create_recipe(user=self.user)
         recipe.tags.add(tag_breakfast)
 
-        tag_lunch = Tag.objects.create(user=self.user, name='Lunch')
+        tag_lunch = Tag.objects.create(user=self.user, name='lunch')
         payload = {
-            'tags': [{'name': 'Lunch'}]
+            'tags': [{'name': 'lunch'}]
         }
         resp = self.client.patch(detail_url(recipe.id), payload, format='json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)

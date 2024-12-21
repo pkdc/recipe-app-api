@@ -44,8 +44,8 @@ class PrivateTagsApiTests(TestCase):
     def test_retrieve_tags(self):
         """Test retrieving a list of tags."""
 
-        Tag.objects.create(user=self.user, name='Vegan')
-        Tag.objects.create(user=self.user, name='Dessert')
+        Tag.objects.create(user=self.user, name='vegan')
+        Tag.objects.create(user=self.user, name='dessert')
 
         resp = self.client.get(TAGS_URL)
         # get all tags directly from the database for comparison
@@ -58,8 +58,8 @@ class PrivateTagsApiTests(TestCase):
     def test_tags_limited_to_user(self):
         """Test list of tags is limited to the authenticated user."""
         user2 = create_user(email='user2@example.com')
-        Tag.objects.create(user=user2, name='Fruity')
-        tag = Tag.objects.create(user=self.user, name='Comfort Food')
+        Tag.objects.create(user=user2, name='fruity')
+        tag = Tag.objects.create(user=self.user, name='comfort food')
 
         resp = self.client.get(TAGS_URL)
 
@@ -70,9 +70,9 @@ class PrivateTagsApiTests(TestCase):
 
     def test_update_tag(self):
         """Test updating a tag."""
-        tag = Tag.objects.create(user=self.user, name="After Dinner")
+        tag = Tag.objects.create(user=self.user, name="after dinner")
 
-        payload = {'name': 'Dessert'}
+        payload = {'name': 'dessert'}
         url = detail_url(tag.id)
         resp = self.client.patch(url, payload)
 
@@ -93,8 +93,8 @@ class PrivateTagsApiTests(TestCase):
 
     def test_filter_tags_assigned_to_recipes(self):
         """Test returns only tags that are assigned to at least one recipe"""
-        tag1 = Tag.objects.create(user=self.user, name="Breakfast")
-        tag2 = Tag.objects.create(user=self.user, name="Lunch")
+        tag1 = Tag.objects.create(user=self.user, name="breakfast")
+        tag2 = Tag.objects.create(user=self.user, name="lunch")
 
         recipe = Recipe.objects.create(
             title='Eggs on toast',
@@ -113,8 +113,8 @@ class PrivateTagsApiTests(TestCase):
 
     def test_filter_tags_assigned_to_recipes_unique(self):
         """Test filtered tags returns a unique list"""
-        tag1 = Tag.objects.create(user=self.user, name="Breakfast")
-        tag2 = Tag.objects.create(user=self.user, name="Dinner")
+        tag1 = Tag.objects.create(user=self.user, name="breakfast")
+        tag2 = Tag.objects.create(user=self.user, name="dinner")
 
         recipe1 = Recipe.objects.create(
             title='Pancakes',
