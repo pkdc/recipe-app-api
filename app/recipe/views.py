@@ -82,6 +82,17 @@ class RecipeViewSet(viewsets.ModelViewSet):
         print(f"Error: {serializer.errors}")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@extend_schema_view(
+    list=extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name='assigned_only',
+                type=OpenApiTypes.INT, enum=[0,1],
+                description='Filter tags that are assigned to recipes',
+            )
+        ]
+    )
+)
 class TagViewSet(mixins.DestroyModelMixin,
                 mixins.UpdateModelMixin,
                 mixins.ListModelMixin, viewsets.GenericViewSet):
